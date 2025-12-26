@@ -40,7 +40,7 @@ namespace ZETag_R23 {
 
             // データがなければ少し待ってからリトライ（必要に応じてpauseを入れる）
             retryCount++;
-            basic.pause(1); // 1ms待機（CPU負荷を抑えるため推奨）
+            basic.pause(10); // 10ms待機（CPU負荷を抑えるため推奨）
         }
 
         // 256回試行してもデータが来なかった場合
