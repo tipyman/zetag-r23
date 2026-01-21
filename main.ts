@@ -209,7 +209,7 @@ namespace ZETag_R23 {
     //% subcategory="Other"
     //% weight=95 blockGap=8
     //% txMode.defl=Mode.FSK4
-    export function Set_TX_Mode(txMode: number): void {
+    export function Set_TX_Mode(txMode: Mode): void {
         // FF 00 03 42 01 45; 4FSK mode
         // FF 00 03 42 10 54; 8FSK mode
         // Query FF 00 02 42 43
