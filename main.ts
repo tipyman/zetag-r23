@@ -1,13 +1,3 @@
-/**
- * makecode ZETag module Package Release 2.3
- * Written by Masakazu Urade (Tipyman)　2025/12/26
- */
-
-/**
- * ZETag block Ver2.3
- */
-
-//% weight=100 color=#32CD32 icon="\uf482" block="ZETag R2.3"
 namespace ZETag_R23 {
     const txBuffer = pins.createBuffer(1);
 
@@ -130,7 +120,7 @@ namespace ZETag_R23 {
     /**
      * set tx power
      */
-    //% blockId=Set TX_Power block="Set TX Power %txPower (dB)"
+    //% blockId=Set_TX_Power block="Set TX Power %txPower (dB)"
     //% subcategory="Other"
     //% weight=95 blockGap=8
     //% txPower.min=1 txPower.max=10 txPower.defl=10
@@ -148,7 +138,7 @@ namespace ZETag_R23 {
     /**
      * set channel spacing
      */
-    //% blockId=set_channel_spacing block="Set channel spacing %chSpace (kHz)"
+    //% blockId=Set_channel_spacing block="Set channel spacing %chSpace (kHz)"
     //% subcategory="Other"
     //% weight=95 blockGap=8
     //% chSpace.min=100 chSpace.max=200 chSpace.defl=100
@@ -211,10 +201,11 @@ namespace ZETag_R23 {
 
         const response5 = Send_ZETag_command(txArray)
     }
+
     /**
-         * set tx mode
-    */
-    //% blockId=Set TX_Mode block="Set TX Mode %txMode"
+     * set tx mode
+     */
+    //% blockId=Set_TX_Mode block="Set TX Mode %txMode"
     //% subcategory="Other"
     //% weight=95 blockGap=8
     //% txMode.defl=Mode.FSK4
@@ -225,7 +216,7 @@ namespace ZETag_R23 {
         if (txMode === Mode.FSK4) {   // 4FSK
             const response6 = Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x01, 0x45])
         } else {                    // 8FSK
-            const response6 = Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x10, 0x54])
+            const response62 = Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x10, 0x54])
         }
     }
 
