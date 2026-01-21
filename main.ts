@@ -212,7 +212,7 @@ namespace ZETag_R23 {
         const response5 = Send_ZETag_command(txArray)
     }
     /**
-         * set tx power
+         * set tx mode
     */
     //% blockId=Set TX_Mode block="Set TX Mode %txMode"
     //% subcategory="Other"
