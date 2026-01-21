@@ -2,6 +2,7 @@
 詳細仕様（ZETag R2.3 MakeCode拡張）
 概要
 micro:bitからZETag MSTG-ST30をUARTで制御し、周波数・チャンネル・出力設定やデータ送信を行う拡張です。
+R2.2からの変更点は、4FSK/8FSKのモード選択機能を追加しました。
 
 拡張の追加方法（MakeCode）
 ・ MakeCode for micro:bit を開く
@@ -60,12 +61,13 @@ TX/RXはクロス接続です。ボーレートは 115,200bps を使用（MakeCo
     export function Transmit_ZETag_data(txArray: number[]): void 
 
 ZETag初期化
-    // ZETagの使用周波数、チャンネル数、チャンネル間隔、出力パワーを設定
+    // ZETagの使用周波数、チャンネル数、チャンネル間隔、出力パワー、送信モードを設定
     export function applySetting(
         frequency: number,
         chSpace: ChSpace,
         chNum: ChNum,
-        txPower: TxPower
+        txPower: TxPower,
+        mode: Mode
     ): void 
 
 その他　ZETagのパラメータ個別に初期化

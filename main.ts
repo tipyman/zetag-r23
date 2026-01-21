@@ -211,6 +211,23 @@ namespace ZETag_R23 {
 
         const response5 = Send_ZETag_command(txArray)
     }
+    /**
+         * set tx power
+    */
+    //% blockId=Set TX_Mode block="Set TX Mode %txMode"
+    //% subcategory="Other"
+    //% weight=95 blockGap=8
+    //% txMode.defl=Mode.FSK4
+    export function Set_TX_Mode(txMode: number): void {
+        // FF 00 03 42 01 45; 4FSK mode
+        // FF 00 03 42 10 54; 8FSK mode
+        // Query FF 00 02 42 43
+        if (txMode === Mode.FSK4) {   // 4FSK
+            const response6 = Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x01, 0x45])
+        } else {                    // 8FSK
+            const response6 = Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x10, 0x54])
+        }
+    }
 
     // --- UI 用の enum（ドロップダウン生成） ---
     export enum ChSpace {
@@ -272,11 +289,7 @@ namespace ZETag_R23 {
         mode: Mode
     ): void {
         // 0) 変調方式の設定
-        if (mode === Mode.FSK4) {   // 4FSK
-            Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x01, 0x45])
-        } else {                    // 8FSK
-            Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x10, 0x54])
-        }
+        Set_TX_Mode(mode)
 
         // 1) 帯域幅の設定 いずれの設定でも100KHzにする
         Set_channel_spacing(ChSpace.KHz100)
