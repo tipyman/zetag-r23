@@ -26,36 +26,12 @@ namespace ZETag_R23 {
      * @return value: 16bit data If return value is 256, reception time out.
     */
     function UART_BIN_RX(): number {
-        let retryCount = 0;
-        const MAX_RETRY = 256;
-
-        while (retryCount < MAX_RETRY) {
-            // 長さ0を指定すると、待機せずに現在のバッファ内容を即座に取得します
-            let rxBuffer = serial.readBuffer(0);
-
-            if (rxBuffer.length > 0) {
-                // データがあればその最初のバイトを返す
-                return rxBuffer[0];
-            }
-
-            // データがなければ少し待ってからリトライ（必要に応じてpauseを入れる）
-            retryCount++;
-            basic.pause(10); // 10ms待機（CPU負荷を抑えるため推奨）
-        }
-
-        // 256回試行してもデータが来なかった場合
-        return 0x100; // タイムアウト
-    }
-
-    /*
-    function UART_BIN_RX(): number {
         const rxBuffer = serial.readBuffer(1)   // Bloking function (wait till receipt)
         if (rxBuffer.length > 0) {              // When receive data, alway length > 0
             return rxBuffer[0]
         }
         return 0;                               // Never come to this line.
     }
-    */
 
     function receive_query(): number[] {
         let response = [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -269,24 +245,39 @@ namespace ZETag_R23 {
         //% block="10"
         dBm10 = 10,
     }
+    export enum Mode {
+        //% block="4FSK"
+        FSK4 = 0,
+        //% block="8FSK"
+        FSK8 = 1
+    }
 
     // --- 4項目をまとめた設定ブロック（完成版） ---
     /**
      * ZETag の無線設定（周波数・帯域幅・チャンネル数・出力）をまとめて適用
      */
     //% blockId=zetag_setting
-    //% block="ZETag Setting|Frequency(Hz) %frequency|Band width(kHz) %chSpace|Number of Channel(ch) %chNum|Tx Power(dB) %txPower"
+    //% block="ZETag Setting|Frequency(Hz) %frequency|Band width(kHz) %chSpace|Number of Channel(ch) %chNum|Tx Power(dB) %txPower|Mode %mode"
     //% group="ZETag Setting" weight=95 blockGap=8
     //% frequency.min=470000000 frequency.max=928000000 frequency.defl=922080000
     //% chSpace.defl=ChSpace.KHz200
     //% chNum.defl=ChNum._2
     //% txPower.defl=TxPower.dBm8
+    //% mode.defl=Mode.FSK4
     export function applySetting(
         frequency: number,
         chSpace: ChSpace,
         chNum: ChNum,
-        txPower: TxPower
+        txPower: TxPower,
+        mode: Mode
     ): void {
+        // 0) 変調方式の設定
+        if (mode === Mode.FSK4) {   // 4FSK
+            Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x01, 0x45])
+        } else {                    // 8FSK
+            Send_ZETag_command([0xff, 0x00, 0x03, 0x42, 0x10, 0x54])
+        }
+
         // 1) 帯域幅の設定 いずれの設定でも100KHzにする
         Set_channel_spacing(ChSpace.KHz100)
 
